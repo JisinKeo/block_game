@@ -9,6 +9,16 @@ class Brick():
         self.x = 6
         self.color = r.randint(1, 6)
 
+    def move_left(self, grid):
+        if grid[self.y][self.x-1] == 0 and grid[self.y+1][self.x-1] == 0:
+            grid[self.y][self.x] = 0
+            self.x -= 1
+
+    def move_right(self, grid):
+        if grid[self.y][self.x+1] == 0 and grid[self.y+1][self.x+1] == 0:
+            grid[self.y][self.x] = 0
+            self.x += 1
+
 
 def draw_grid(block, grid):
     block.clear()
@@ -49,12 +59,18 @@ if __name__ == "__main__":
     brick = Brick()
     grid[brick.y][brick.x] = brick.color
     draw_grid(block, grid)
+
+    sc.onkeypress(lambda: brick.move_left(grid), "Left")
+    sc.onkeypress(lambda: brick.move_right(grid), "Right")
+    sc.listen()
     while True:
         sc.update()
         if grid[brick.y+1][brick.x] == 0:
             grid[brick.y][brick.x] = 0
             brick.y += 1
             grid[brick.y][brick.x] = brick.color
+        else:
+            brick = Brick()
         for x in grid:
             print(x)
         print()
